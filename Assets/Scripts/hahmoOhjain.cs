@@ -26,13 +26,18 @@ public class hahmoOhjain : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update(){
         horisontaalinenPyorinta += Input.GetAxis("Mouse X")  * hiirenNopeus;
         vertikaalinenPyorinta -= Input.GetAxis("Mouse Y") * hiirenNopeus;
         //Debug.Log($"asteet {horisontaalinenPyorinta}");
         vertikaalinenPyorinta = Mathf.Clamp(vertikaalinenPyorinta,-maxKaannosAsteet, maxKaannosAsteet);
         transform.localRotation = Quaternion.Euler(vertikaalinenPyorinta,horisontaalinenPyorinta,0);
-        //DO THE MOVES!
+
+        float nopeusEteen =  Input.GetAxis("Vertical");
+        float nopeusSivulle = Input.GetAxis("Horizontal");
+        Vector3 nopeus = new Vector3(nopeusSivulle, 0,nopeusEteen);
+
+        nopeus = transform.rotation * nopeus;
+        controller.SimpleMove(nopeus * juoksuNopeus);
     }
 }
