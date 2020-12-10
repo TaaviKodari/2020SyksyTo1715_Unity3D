@@ -6,7 +6,10 @@ public class hahmoOhjain : MonoBehaviour
 {
     public float juoksuNopeus = 3;
     public float hiirenNopeus = 3;
+    [SerializeField]
+    private float hyppyVoima = 100f;
     public float painovoima = 10;
+    [Header("hiiren asetukset")]
     public float horisontaalinenPyorinta = 0;
     public float vertikaalinenPyorinta = 0;
     public float maxKaannosAsteet = 60;
@@ -39,5 +42,20 @@ public class hahmoOhjain : MonoBehaviour
 
         nopeus = transform.rotation * nopeus;
         controller.SimpleMove(nopeus * juoksuNopeus);
+
+        liikesuunta.y -= painovoima * Time.deltaTime;
+        controller.Move(liikesuunta* Time.deltaTime);
+
+        if(controller.isGrounded == true && Input.GetButtonDown("Jump")){
+            //tee hyppy
+            liikesuunta.y += hyppyVoima;
+        }
+    }
+
+    void OnTriggerEnter(Collider tormattyMalli){
+        if(tormattyMalli.tag == "Coin"){
+            print("hurraa, kerättiin kolikko");
+            Destroy(tormattyMalli.gameObject);
+        }
     }
 }
